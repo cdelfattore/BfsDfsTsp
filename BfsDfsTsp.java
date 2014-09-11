@@ -7,10 +7,11 @@ public class BfsDfsTsp {
 	//Below is list of edges in the graph. This will not change.
 	public static List<String> graphEdgesList = Arrays.asList("1-2,3,4","2-3","3-4,5","4-5,6,7","5-7,8","6-8","7-9,10","8-9,10,11","9-11","10-11");
 	//public static Map<String,String> graphEdgesMap
+	public static Map<Integer,List<Edge>> nodeAndEdges;
 	public static void main(String args[]) throws IOException{
 	
-		//Takes the filename as a parameter. File contains points and the x and y cooridnates.
-		String filename = args[0];
+		//Because we are only using one file, we can simply declare it in the program
+		String filename = "11PointDFSBFS.tsp";
 
 		//The point class is defined at the bottom of this file.
 		//The point class is a basic class to store information about a point.
@@ -53,7 +54,7 @@ public class BfsDfsTsp {
 
 		//Create a map of the Points with a List of their edges.
 		//Edges contains info about
-		Map<Integer,List<Edge>> nodeAndEdges = new HashMap<Integer,List<Edge>>();
+		nodeAndEdges = new HashMap<Integer,List<Edge>>();
 		for(String s : graphEdgesList){
 			String[] parChd = s.split("-");
 			//System.out.println(parChd[0] + " " + parChd[1]);
@@ -74,18 +75,8 @@ public class BfsDfsTsp {
 			}
 		}*/
 
-		LinkedList<Integer> que = new LinkedList<Integer>();
-		LinkedList<Integer> finOrderQueue = new LinkedList<Integer>();
-		que.addLast(1);
-		//need to keep track of nodes already visited.
-		while(!que.isEmpty()){
-			List<Edge> le = nodeAndEdges.get(que.element());
-			for(Edge e : le){
-				System.out.println(e.nodeTo());
-				que.add(Integer.parseInt(e.nodeTo()));
-			}
-			System.out.println(que.poll());
-		}
+		
+		//breadthFirstSearch();
 
 		
 	}
@@ -94,6 +85,45 @@ public class BfsDfsTsp {
 	//Uses distance formula
 	public static double computeDistance(Point a, Point b){
 		return Math.sqrt( ((a.getX() - b.getX()) * (a.getX() - b.getX())) + ((a.getY() - b.getY()) * (a.getY() - b.getY()) ) );
+	}
+
+	public static List<Integer> breadthFirstSearch(){
+		//Breath first search
+		LinkedList<Integer> que = new LinkedList<Integer>();
+		List<Integer> visited = new ArrayList<Integer>();
+		LinkedList<Integer> finOrderQueue = new LinkedList<Integer>();
+		que.addLast(1);
+		Boolean breakLoop = false; //when 11 is found set breakLoop to false;
+		//need to keep track of nodes already visited.
+		while(!que.isEmpty()){
+			List<Edge> le = nodeAndEdges.get(que.element());
+			System.out.println("Current Node: " + que.element());
+			for(Edge e : le){
+				if(!que.contains(Integer.parseInt(e.nodeTo()))){
+					que.add(Integer.parseInt(e.nodeTo()));
+					System.out.println("Adding to queue: " + e.nodeTo());
+					if(que.contains(11)){
+						System.out.println("Break Loop");
+						breakLoop = true;
+					}
+				}				
+			}
+			System.out.println("Adding to visited: " + que.element());
+			visited.add(que.element());
+			que.poll();
+			if(breakLoop){
+				break;
+			}
+		}
+		System.out.print("Discovered nodes: ");
+		for(Integer i : visited){
+			System.out.print(i + ",");
+		}
+		System.out.println();
+		return visited;
+	}
+	public static List<Integer> depthFirstSearch() {
+
 	}
 }
 
