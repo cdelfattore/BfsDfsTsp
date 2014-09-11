@@ -57,6 +57,7 @@ public class BfsDfsTsp {
 		nodeAndEdges = new HashMap<Integer,List<Edge>>();
 		for(String s : graphEdgesList){
 			String[] parChd = s.split("-");
+			//System.out.println(s);
 			//System.out.println(parChd[0] + " " + parChd[1]);
 			List<Edge> tmp = new ArrayList<Edge>();
 			for(String a : parChd[1].split(",")){
@@ -75,8 +76,11 @@ public class BfsDfsTsp {
 			}
 		}*/
 
-		
+		/*for(Edge e : nodeAndEdges.get(11)){
+			System.out.println(e.pointTo);
+		}*/
 		//breadthFirstSearch();
+		depthFirstSearch();
 
 		
 	}
@@ -91,7 +95,6 @@ public class BfsDfsTsp {
 		//Breath first search
 		LinkedList<Integer> que = new LinkedList<Integer>();
 		List<Integer> visited = new ArrayList<Integer>();
-		LinkedList<Integer> finOrderQueue = new LinkedList<Integer>();
 		que.addLast(1);
 		Boolean breakLoop = false; //when 11 is found set breakLoop to false;
 		//need to keep track of nodes already visited.
@@ -112,6 +115,7 @@ public class BfsDfsTsp {
 			visited.add(que.element());
 			que.poll();
 			if(breakLoop){
+				visited.add(11);
 				break;
 			}
 		}
@@ -123,7 +127,35 @@ public class BfsDfsTsp {
 		return visited;
 	}
 	public static List<Integer> depthFirstSearch() {
+		Stack<Integer> st = new Stack<Integer>();
+		List<Integer> visited = new ArrayList<Integer>();
 
+		//Start the search at root node one
+		st.push(1);
+		//System.out.println(st.peek());
+		//System.out.println(st.isEmpty());
+
+		while(!st.isEmpty()) {
+			if(st.peek() == 11) {
+				break;
+			}
+			List<Edge> le = nodeAndEdges.get(st.peek());
+			for(int i = 0;i<le.size();i++){
+				if(!visited.contains(le.get(i).nodeTo())){
+					//System.out.println(le.get(i).nodeTo());
+					st.push(Integer.parseInt(le.get(i).nodeTo()));
+					if(!visited.contains(Integer.parseInt(le.get(i).nodeTo()))){
+						visited.add( Integer.parseInt(le.get(i).nodeTo()) );
+					}
+					break;
+				}
+			}
+		}
+		for(Integer i : visited){
+			System.out.print(i + ",");
+		}
+		System.out.println();
+		return visited;	
 	}
 }
 
