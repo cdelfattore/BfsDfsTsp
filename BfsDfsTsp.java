@@ -72,15 +72,20 @@ public class BfsDfsTsp {
 		/*for(int i = 1; i < 12; i++){
 			//System.out.println(i + " " + nodeAndEdges.get(i));
 			for(Edge e : nodeAndEdges.get(i)){
-				//System.out.println(i + " Edge: " + e.getName() + " Distance: " + e.getDistance());	
+				System.out.println(i + " Edge: " + e.getName() + " Distance: " + e.getDistance());	
+
 			}
 		}*/
+		/*
+		List<Edge> e = nodeAndEdges.get(11);
+		System.out.println(e);
+		*/
+		
 
-		/*for(Edge e : nodeAndEdges.get(11)){
-			System.out.println(e.pointTo);
-		}*/
+
 		//breadthFirstSearch();
-		depthFirstSearch();
+		//depthFirstSearch();
+		dikstra();
 
 		
 	}
@@ -91,6 +96,30 @@ public class BfsDfsTsp {
 		return Math.sqrt( ((a.getX() - b.getX()) * (a.getX() - b.getX())) + ((a.getY() - b.getY()) * (a.getY() - b.getY()) ) );
 	}
 
+	public static void dikstra() {
+		Map<Integer,Edge> cheapest = new HashMap<Integer,Edge>();
+		for(Integer i : nodeAndEdges.keySet()){
+			//System.out.println(i + " " + nodeAndEdges.get(i));
+			Edge shortest = new Edge();
+			//System.out.println(shortest);
+			for(Edge e : nodeAndEdges.get(i)){
+				System.out.println(i + " Edge: " + e.getName() + " Distance: " + e.getDistance());
+				//System.out.println(nodeAndEdges.get(i).indexOf(e));
+				if(shortest.getDistance() == null){
+					shortest = e;
+					//System.out.println(shortest);
+				}
+				if(shortest.getDistance() > e.getDistance()){
+					shortest = e;
+				}
+			}
+			cheapest.put(i,shortest);
+			System.out.println(shortest.getName());
+		}	
+
+	}
+
+	//Modify to use A*, a modification of breathFirstSearch
 	public static List<Integer> breadthFirstSearch(){
 		//Breath first search
 		LinkedList<Integer> que = new LinkedList<Integer>();
@@ -100,11 +129,11 @@ public class BfsDfsTsp {
 		//need to keep track of nodes already visited.
 		while(!que.isEmpty()){
 			List<Edge> le = nodeAndEdges.get(que.element());
-			System.out.println("Current Node: " + que.element());
+			//System.out.println("Current Node: " + que.element());
 			for(Edge e : le){
 				if(!que.contains(Integer.parseInt(e.nodeTo()))){
 					que.add(Integer.parseInt(e.nodeTo()));
-					System.out.println("Adding to queue: " + e.nodeTo());
+					//System.out.println("Adding to queue: " + e.nodeTo());
 					if(que.contains(11)){
 						System.out.println("Break Loop");
 						breakLoop = true;
@@ -126,36 +155,101 @@ public class BfsDfsTsp {
 		System.out.println();
 		return visited;
 	}
-	public static List<Integer> depthFirstSearch() {
+	//old depth first search
+	/*public static List<Integer> depthFirstSearch() {
 		Stack<Integer> st = new Stack<Integer>();
 		List<Integer> visited = new ArrayList<Integer>();
 
 		//Start the search at root node one
 		st.push(1);
-		//System.out.println(st.peek());
-		//System.out.println(st.isEmpty());
+		//visited.add(1);
+		Boolean stopWhile = false;
 
 		while(!st.isEmpty()) {
-			if(st.peek() == 11) {
+			if(stopWhile){
 				break;
 			}
 			List<Edge> le = nodeAndEdges.get(st.peek());
-			for(int i = 0;i<le.size();i++){
-				if(!visited.contains(le.get(i).nodeTo())){
-					//System.out.println(le.get(i).nodeTo());
-					st.push(Integer.parseInt(le.get(i).nodeTo()));
+			if(le != null){
+				for(int i = 0;i<le.size();i++){
+					System.out.println("Current Node: " + le.get(i).nodeFrom() + " node to " + le.get(i).nodeTo());
 					if(!visited.contains(Integer.parseInt(le.get(i).nodeTo()))){
-						visited.add( Integer.parseInt(le.get(i).nodeTo()) );
+						//System.out.println(le.get(i).nodeTo());
+						st.push(Integer.parseInt(le.get(i).nodeTo()));
+						if(!visited.contains(Integer.parseInt(le.get(i).nodeTo()))){
+							visited.add(Integer.parseInt(le.get(i).nodeTo()) );
+							//System.out.println(Integer.parseInt(le.get(i).nodeTo()));
+							break;
+						}
 					}
-					break;
+					else{
+						//System.out.println("Back Track on node: " + Integer.parseInt(le.get(i).nodeTo()));
+						if(st.size() > 1){
+							st.pop();
+							continue;
+						}
+						else {
+							System.out.println("Stop");
+							//System.out.println(st.peek());
+							//visited.add(st.peek());
+							stopWhile = true;
+							break;
+						}							
+					}
 				}
 			}
+			else {
+				//System.out.println(st.peek());
+				st.pop();
+			}
 		}
-		for(Integer i : visited){
-			System.out.print(i + ",");
+		for(Integer j : visited){
+			System.out.print(j + ",");
 		}
 		System.out.println();
 		return visited;	
+	}*/
+
+
+	public static List<Integer> depthFirstSearch(){
+
+		Stack<Integer> st = new Stack<Integer>();
+		List<Integer> visited = new ArrayList<Integer>();
+
+		//Start the search at root node one
+		st.push(1);
+		visited.add(1);
+		Boolean stopWhile = false;
+
+		while(!st.isEmpty()) {
+			List<Edge> le = nodeAndEdges.get(st.peek());
+				if(le == null){
+					//continue; //need to figure out how to make this a true depth first search later.
+					//or break because we found 11;
+					break;
+				}
+				for(int i = 0;i<le.size();i++){
+					//System.out.println("Node From: " + le.get(i).nodeFrom() + " Node to: " + le.get(i).nodeTo());
+					if(!visited.contains(le.get(i).nodeTo())){
+						st.push(Integer.parseInt(le.get(i).nodeTo()));
+						visited.add(Integer.parseInt(le.get(i).nodeTo()));
+						break;
+					}
+					else {
+						visited.add(st.pop());
+						for(Integer a : visited){
+							System.out.print(a + ",");
+							System.out.println("");
+						}
+					}
+			}
+		}
+		/*for(Integer a : visited){
+			System.out.print(a + ",");
+		}*/
+		System.out.println("");
+		return visited;
+
 	}
 }
 
@@ -205,12 +299,20 @@ class Edge {
 		this.name = from.getName() + "-" + to.getName();
 	}
 
+	Edge(){
+		distance = null;
+	}
+
 	String getName(){
 		return name;
 	}
 
 	String nodeTo(){
 		return pointTo.getName();
+	}
+
+	String nodeFrom(){
+		return pointFrom.getName();
 	}
 
 	Double getDistance(){
