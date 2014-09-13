@@ -7,7 +7,7 @@ public abstract class AbstractGraph implements Graph {
 	//Contructor to make abstract graph from a List of edges and a list of nodes
 	protected AbstractGraph(List<Edge> ledges, List lnodes){
 		this.nodes = lnodes.toArray();
-		createAdjacencyLists(ledges, lnodes.size() + 1);
+		createAdjacencyLists(ledges, lnodes.size());
 	}
 
 	//method to create adjaceny list for each node
@@ -134,6 +134,12 @@ public abstract class AbstractGraph implements Graph {
 		this.root = root;
 		this.parent = parent;
 		this.searchOrders = searchOrders;
+	}
+
+	//Contructor needed for WeightedGraphClass
+	public Tree(int root, int[] parent){
+		this.root = root;
+		this.parent = parent;
 	}
 
 	//get the root of the tree
