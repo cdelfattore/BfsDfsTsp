@@ -93,7 +93,8 @@ public abstract class AbstractGraph implements Graph {
 			}
 		}
 	}
-
+	//Breadth First Search
+	//v is the root node
 	public Tree bfs(int v){
 		List<Integer> searchOrders = new ArrayList<Integer>();
 		int[] parent = new int[nodes.length];
@@ -126,71 +127,71 @@ public abstract class AbstractGraph implements Graph {
 	}
 
 	public class Tree {
-	private int root; // the number of root node in the tree
-	private int[] parent; // stores the parent of each node
-	private List<Integer> searchOrders; // store the search order
+		private int root; // the number of root node in the tree
+		private int[] parent; // stores the parent of each node
+		private List<Integer> searchOrders; // store the search order
 
-	public Tree(int root, int[] parent, List<Integer> searchOrders){
-		this.root = root;
-		this.parent = parent;
-		this.searchOrders = searchOrders;
-	}
+		public Tree(int root, int[] parent, List<Integer> searchOrders){
+			this.root = root;
+			this.parent = parent;
+			this.searchOrders = searchOrders;
+		}
 
-	//Contructor needed for WeightedGraphClass
-	public Tree(int root, int[] parent){
-		this.root = root;
-		this.parent = parent;
-	}
+		//Contructor needed for WeightedGraphClass
+		public Tree(int root, int[] parent){
+			this.root = root;
+			this.parent = parent;
+		}
 
-	//get the root of the tree
-	public int getRoot(){
-		return root;
-	}
+		//get the root of the tree
+		public int getRoot(){
+			return root;
+		}
 
-	//get the parent of any node
-	public int getParent(int v){
-		return parent[v];
-	}
+		//get the parent of any node
+		public int getParent(int v){
+			return parent[v];
+		}
 
-	//Return the order that the nodes were searched in
-	public List<Integer> getSearchOrders(){
-		return searchOrders;
-	}
+		//Return the order that the nodes were searched in
+		public List<Integer> getSearchOrders(){
+			return searchOrders;
+		}
 
-	//return the number of verticies found
-	public int getNumOfVerticesFound(){
-		return searchOrders.size();
-	}
+		//return the number of verticies found
+		public int getNumOfVerticesFound(){
+			return searchOrders.size();
+		}
 
-	public java.util.Iterator pathIterator(int v){
-		return new PathIterator(v);
-	}
+		public java.util.Iterator pathIterator(int v){
+			return new PathIterator(v);
+		}
 
-	//PathIterator class is need for printing the path
-	public class PathIterator implements java.util.Iterator {
-		private Stack<Integer> stack;
-		public PathIterator(int v){
-			stack = new Stack<Integer>();
-			do {
-				stack.add(v);
-				v = parent[v];
+		//PathIterator class is need for printing the path
+		public class PathIterator implements java.util.Iterator {
+			private Stack<Integer> stack;
+			public PathIterator(int v){
+				stack = new Stack<Integer>();
+				do {
+					stack.add(v);
+					v = parent[v];
+				}
+				while (v != -1) ;
 			}
-			while (v != -1) ;
-		}
 
-		//has a next element in the iterator?
-		public boolean hasNext(){
-			return !stack.isEmpty();
-		}
+			//has a next element in the iterator?
+			public boolean hasNext(){
+				return !stack.isEmpty();
+			}
 
-		//Gets the current element in the iterator and move
-		//the iterator to point to the next element
-		public Object next(){
-			return nodes[stack.pop()];
-		}
+			//Gets the current element in the iterator and move
+			//the iterator to point to the next element
+			public Object next(){
+				return nodes[stack.pop()];
+			}
 
-		//defined in iterator method, I don't need it so won't implement it
-		public void remove(){ }
+			//defined in iterator method, I don't need it so won't implement it
+			public void remove(){ }
 	}
 
 	//Print path from the root node to vertex v

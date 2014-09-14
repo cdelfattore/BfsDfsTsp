@@ -66,22 +66,23 @@ public class WeightedGraph extends AbstractGraph {
 		//Get a copy of queues
 		PriorityQueue<WeightedEdge>[] queues = deepClone(this.queues);
 
-		Boolean stop = false;
 		//Expand nodes found
 		while(T.size() < numOfNodes){
 			int v = -1;
 			double smallestCost = Double.MAX_VALUE; //infinity to start
 			for(int u : T){
+				//u equals 11 stop the search!
 				//System.out.println(u);
 				if(u == 11){
-					stop = true;
 					break;
 				}
+				//the path to u has already been found and is in the set T
 				while(!queues[u].isEmpty() && T.contains(queues[u].peek().pTo)) {
 					queues[u].remove();//remove nodes in nodes found
 				}
 
 				if(queues[u].isEmpty()){
+					//all nodes ajacent to u are in verticesFound
 					continue;
 				}
 
@@ -95,6 +96,7 @@ public class WeightedGraph extends AbstractGraph {
 			}//end for
 
 			if(v != -1) {
+				//add the new node to the set T
 				T.add(v);
 				costs[v] = smallestCost;
 			}

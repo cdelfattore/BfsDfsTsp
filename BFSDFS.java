@@ -4,12 +4,20 @@ import java.util.regex.*;
 
 public class BFSDFS {
 	public static void main(String[] args) throws IOException {
+		//The inital list of graph edges
 		List<String> graphEdgesList = Arrays.asList("1-2,3,4","2-3","3-4,5","4-5,6,7","5-7,8","6-8","7-9,10","8-9,10,11","9-11","10-11");
+		
+		//List to store the edges
 		List<Edge> edges = new ArrayList<Edge>();
+		
+		//List to store the edges with distances(weights)
 		List<WeightedEdge> wedges = new ArrayList<WeightedEdge>();
+
+		//List of integers the represent the nodes of the graph
 		List<Integer> nodes = new ArrayList<Integer>();
 		
-		//need to add 0 to keep arrays big enough when nodes.size() is used.
+		//The graph classes use arrays, so I needed to add 0 to keep
+		// keep the arrays big enough when nodes.size() is used for example.
 		nodes.add(0);
 
 		//Because we are only using one file, we can simply declare it in the program
@@ -41,6 +49,7 @@ public class BFSDFS {
 			}
 		}
 
+		//Create a map of points so we can access them more easily later.
 		HashMap<Integer,Point> pointsMap = new HashMap<Integer,Point>();
 		for (Point p : points) {
 			pointsMap.put(p.name, p);
@@ -99,9 +108,10 @@ public class BFSDFS {
 
 		WeightedGraph wgraph = new WeightedGraph(wedges, nodes);
 		WeightedGraph.ShortestPathTree spt = wgraph.getShortestPath(1);
-		//need to fix
-		spt.printAllPaths();
-		//System.out.println("The shortest path from 1 to 11 is: " + spt.getCost(11));
+		//print all paths only work when starting from node one
+		//as of now doesn't need to function any other way.
+		//spt.printAllPaths();
+		System.out.println("The shortest path from 1 to 11 is: " + spt.getCost(11));
 
 	}
 
