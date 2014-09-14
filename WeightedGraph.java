@@ -1,3 +1,8 @@
+/* Assignment: Project 2 - Breadth First Search, Depth First Search, Shortest Path
+** Name: Chris Del Fattore
+** Email: crdelf01@cardmail.louisville.edu
+** Description: This class extends AbstractGraph and will be used to find the shoretes path from one to eleven
+*/
 import java.util.*;
 
 public class WeightedGraph extends AbstractGraph {

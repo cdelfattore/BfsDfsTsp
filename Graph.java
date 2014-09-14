@@ -1,7 +1,7 @@
-/*	Chris Del Fattore
-*
-*
-*
+/* Assignment: Project 2 - Breadth First Search, Depth First Search, Shortest Path
+** Name: Chris Del Fattore
+** Email: crdelf01@cardmail.louisville.edu
+** Description: This class is a interface to be implement in the AbstractGraph, UnweightedGraph and WeightedGraph class
 */
 public interface Graph {
 	//Return the number of vertices in the graph
