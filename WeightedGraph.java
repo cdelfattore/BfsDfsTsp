@@ -9,17 +9,21 @@ public class WeightedGraph extends AbstractGraph {
 		createQueues(edges, nodes.size());
 	}
 
+	//create priority queue adjacency list from edge list
 	public void createQueues(List<WeightedEdge> edges, int numOfNodes){
+		//queue is a array of priorityqueues
 		queues = new PriorityQueue[numOfNodes];
+		//initally fill queue with empther priority queues
 		for (int i = 0;i < queues.length;i++ ) {
 			queues[i] = new java.util.PriorityQueue();
 		}
-
+		//add the edges to the priorities by there node from
 		for (WeightedEdge edge: edges) {
 			queues[edge.pFrom].offer(edge);
 		}
 	}
 
+	//print the weighted edges stored in queue
 	public void printWeightedEdges() {
 		for (int i=0;i<queues.length;i++ ) {
 			System.out.print("Vertex " + i + ": ");
@@ -30,6 +34,8 @@ public class WeightedGraph extends AbstractGraph {
 		}
 	}
 
+	//method used to create a copy of the queue
+	//this method is need when finding the shortest paths
 	private PriorityQueue<WeightedEdge>[] deepClone(PriorityQueue<WeightedEdge>[] queues){
 		PriorityQueue<WeightedEdge>[] copiedQueues = new PriorityQueue[queues.length];
 
@@ -86,6 +92,7 @@ public class WeightedGraph extends AbstractGraph {
 					continue;
 				}
 
+				//check to see if the cost of u is the smallestCost
 				WeightedEdge e = queues[u].peek();
 				if (costs[u] + e.weight < smallestCost){
 					v = e.pTo;
@@ -108,22 +115,14 @@ public class WeightedGraph extends AbstractGraph {
 			
 		}//end while
 
-		//System.out.print(sourceVertex);
-
-		/*for (Integer i : parent) {
-			System.out.println("parent: " + i);
-		}*/
-		
-		/*for(int i=0;i<costs.length;i++){
-			System.out.println("Cost of " + i + ": " + costs[i]);
-		}*/
-
 		return new ShortestPathTree(sourceVertex, parent, costs);
 	}
 
 	public class ShortestPathTree extends Tree {
+	//costs[v] is the cost from v to source
 	private	double[] costs;
 
+	//Contruct a path
 	public ShortestPathTree(int source, int[] parent, double[] costs){
 		super(source, parent);
 		this.costs = costs;
@@ -133,7 +132,7 @@ public class WeightedGraph extends AbstractGraph {
 	public double getCost(int v){
 		return costs[v];
 	}
-
+	//print all paths of the tree
 	public void printAllPaths() {
 		System.out.println("All Shortest paths from " + nodes[getRoot()] + " are:");
 		for (int i = 1;i < costs.length; i++ ) {

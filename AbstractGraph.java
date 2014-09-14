@@ -1,3 +1,8 @@
+/* Assignment: Project 2 - Breadth First Search, Depth First Search, Shortest Path
+** Name: Chris Del Fattore
+** Email: crdelf01@cardmail.louisville.edu
+** Description: This class implements the Graph class. Will be the super class to WeightedGraph and UnweightedGraph
+*/
 import java.util.*;
 
 public abstract class AbstractGraph implements Graph {
@@ -53,6 +58,7 @@ public abstract class AbstractGraph implements Graph {
 		return neighbors[v];
 	}
 
+	//print the edges of the graph
 	public void printEdges() {
 		for(int i = 0; i < neighbors.length; i++){
 			System.out.print("Node " + i + ": ");
@@ -77,6 +83,7 @@ public abstract class AbstractGraph implements Graph {
 		//Start the recursive search
 		dfs(v, parent, searchOrders, isVisited);
 
+		//return the Tree
 		return new Tree(v, parent, searchOrders);
 	}
 
@@ -84,8 +91,10 @@ public abstract class AbstractGraph implements Graph {
 	private void dfs(int v, int[] parent, List<Integer> searchOrders, boolean[] isVisited){
 		//store the visited node v 
 		searchOrders.add(v);
+		//mark v as vistied
 		isVisited[v] = true;
 
+		//iterate over all of the neighbors of v
 		for(int i : neighbors[v]){
 			if(!isVisited[i]){
 				parent[i] = v;
@@ -93,6 +102,7 @@ public abstract class AbstractGraph implements Graph {
 			}
 		}
 	}
+
 	//Breadth First Search
 	//v is the root node
 	public Tree bfs(int v){
@@ -112,6 +122,7 @@ public abstract class AbstractGraph implements Graph {
 		//mark it as visited
 		isVisited[v] = true;
 
+		//iterate over the nodes as they are added to the queue
 		while(!queue.isEmpty()){
 			int u = queue.poll(); //dequeue the node to u
 			searchOrders.add(u);
@@ -126,11 +137,15 @@ public abstract class AbstractGraph implements Graph {
 		return new Tree(v, parent, searchOrders);
 	}
 
+	//Tree is used to store the results of dfs and bfs
+	//dfs and bfs conceptually create a tree data structure
 	public class Tree {
 		private int root; // the number of root node in the tree
 		private int[] parent; // stores the parent of each node
 		private List<Integer> searchOrders; // store the search order
 
+		//Constructor for Unweighted graph class
+		//THis constructor records the search order.
 		public Tree(int root, int[] parent, List<Integer> searchOrders){
 			this.root = root;
 			this.parent = parent;
@@ -163,6 +178,7 @@ public abstract class AbstractGraph implements Graph {
 			return searchOrders.size();
 		}
 
+		//get the path iterator
 		public java.util.Iterator pathIterator(int v){
 			return new PathIterator(v);
 		}

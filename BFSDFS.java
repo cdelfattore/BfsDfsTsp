@@ -1,3 +1,14 @@
+/* Assignment: Project 2 - Breadth First Search, Depth First Search, Shortest Path
+** Name: Chris Del Fattore
+** Email: crdelf01@cardmail.louisville.edu
+** Description: This class is a interface to be implement in the AbstractGraph, UnweightedGraph and WeightedGraph class
+** The following classes need to be compiled in order to run the main BFSDFS.java class.
+** Make sure the ‘11PointDFSBFS.tsp’ file is in the same directory as the BFSDFS.java file.
+** Compile Like so:
+** Javac Graph.java AbstractGraph.java UnweightedGraph.java WeightedGraph.java WeightedEdge.java Edge.java BFSDFS.java
+** To Run:
+** java BFSDFS
+*/
 import java.util.*;
 import java.io.*;
 import java.util.regex.*;
@@ -88,6 +99,7 @@ public class BFSDFS {
 			}
 		}
 
+		//Methods to check and print values
 		/*for(WeightedEdge we : wedges){
 			System.out.println(we.pFrom + "-" + we.pTo + ": " + we.weight);
 		}*/
@@ -100,6 +112,7 @@ public class BFSDFS {
 			System.out.println(e.pFrom + "-" +  e.pTo);
 		}*/
 
+		//Create and unweighted graph that will be used to perform bfs and dfs
 		UnweightedGraph ugraph = new UnweightedGraph(edges,nodes);
 		AbstractGraph.Tree tbfs = ugraph.bfs(1);
 		AbstractGraph.Tree tdfs = ugraph.dfs(1);
@@ -123,6 +136,7 @@ public class BFSDFS {
 	}	
 }
 
+//Class point to store points and their x and y values
 class Point {
 	int name;
 	double x, y;
